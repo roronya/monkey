@@ -20,8 +20,8 @@ const (
 	PLUS   = "+"
 
 	// デリミタ
-	COMMA    = ","
-	SEMICRON = ";"
+	COMMA     = ","
+	SEMICOLON = ";"
 
 	LPAREN = "("
 	RPAREN = ")"
