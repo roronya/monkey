@@ -65,5 +65,7 @@ func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 		return false
 	}
 
+	// TODO: letStmt.Valueの構文解析のテスト
+
 	return true
 }
