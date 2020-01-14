@@ -323,6 +323,22 @@ func TestOperatorPrecedenceParsing(t *testing.T) {
 			"3 + 4 * 5 == 3 * 1 + 4 * 5",
 			"((3 + (4 * 5)) == ((3 * 1) + (4 * 5)))",
 		},
+		{
+			"true",
+			"true",
+		},
+		{
+			"false",
+			"false",
+		},
+		{
+			"3 > 5 == false",
+			"((3 > 5) == false)",
+		},
+		{
+			"3 < 5 == true",
+			"((3 < 5) == true)",
+		},
 	}
 
 	for _, tt := range tests {
@@ -370,6 +386,8 @@ func testLiteralExperession(
 		return testIntegerLiteral(t, exp, v)
 	case string:
 		return testIdentifier(t, exp, v)
+	case bool:
+		return testBooleanExpression(t, exp, v)
 	}
 	t.Errorf("type of exp not handled. got=%T", exp)
 	return false
@@ -426,18 +444,18 @@ func testBooleanExpression(
 	b ast.Expression,
 	value bool,
 ) bool {
-	boolea, ok := b.(*ast.Boolean)
+	bo, ok := b.(*ast.Boolean)
 	if !ok {
 		t.Errorf("b not *ast.Boolean. got=%T", b)
 		return false
 	}
 
-	if boolea.Value != value {
-		t.Errorf("boolea.Value not %t. got=%t", value, boolea.Value)
+	if bo.Value != value {
+		t.Errorf("bo.Value not %t. got=%t", value, bo.Value)
 		return false
 	}
 
-	if boolea.TokenLiteral() != fmt.Sprintf("%t", value) {
+	if bo.TokenLiteral() != fmt.Sprintf("%t", value) {
 		t.Errorf("b.TokenLiteral not %t. got=%s", value,
 			b.TokenLiteral())
 		return false
