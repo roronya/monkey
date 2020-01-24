@@ -7,6 +7,7 @@ import (
 
 	"github.com/roronya/monkey/evaluator"
 	"github.com/roronya/monkey/lexer"
+	"github.com/roronya/monkey/object"
 	"github.com/roronya/monkey/parser"
 )
 
@@ -25,6 +26,7 @@ func Start(in io.Reader, out io.Writer) {
 		line := scanner.Text()
 		l := lexer.New(line)
 		p := parser.New(l)
+		env := object.NewEnvironment()
 
 		program := p.ParseProgram()
 		if len(p.Errors()) != 0 {
@@ -32,7 +34,7 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		evaluated := evaluator.Eval(program)
+		evaluated := evaluator.Eval(program, env)
 		if evaluated != nil {
 			io.WriteString(out, evaluated.Inspect())
 			io.WriteString(out, "\n")
